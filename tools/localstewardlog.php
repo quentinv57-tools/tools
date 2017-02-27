@@ -8,7 +8,7 @@ Licence : GNU General Public License v3
 			(see //www.gnu.org/licenses/)
 			
 Date of creation : 2011-08
-Last modified : 2011-08-27
+Last modified : 2016-11-20 (by Alex Monk as a tools admin for https://phabricator.wikimedia.org/T67226, previously: 2011-08-27)
 
 Local Steward Log TS tool
 			
@@ -78,7 +78,7 @@ if (empty($_GET['wiki']) || !array_key_exists($_GET['wiki'], $arr_databases))
 elseif (array_key_exists($_GET['wiki'], $arr_databases))
 {
 	$wiki = $_GET['wiki']; // no security issue, as the var is in $arr_databases
-	$wiki_url = '//' .$arr_databases[$wiki]; // much better :)
+	$wiki_url = $arr_databases[$wiki];
 	$limit = (!empty($_GET['limit'])) ? intval($_GET['limit']) : '50'; // 50 is the limit by default
 	if ($limit>100000) $limit = 100000; // limit can't be over 100000
 	$offset = (!empty($_GET['offset'])) ? intval($_GET['offset']) : 0;

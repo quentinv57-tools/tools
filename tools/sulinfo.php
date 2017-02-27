@@ -9,7 +9,7 @@ Licence : GNU General Public License v3
 			(see //www.gnu.org/licenses/)
 			
 Date of creation : 2011-08
-Last modified : 2012-01-26
+Last modified : 2016-11-20 (by Alex Monk as tools admin, previous: 2012-01-26)
 
 SULinfo TS tool
 			
@@ -92,16 +92,16 @@ if (empty($_GET['username']))
 <table border="0" id="mw-movepage-table">
 <tr><td class='mw-label'><label>Display inactivity :</label></td>
 	<td class='mw-input'><input type="radio" name="pref-showinactivity" value="ask" <?php if (empty($_COOKIE['sulinfo-pref-showinactivity']) || $_COOKIE['sulinfo-pref-showinactivity']=='ask') echo 'checked="checked"'; ?>/>Still ask&#160;&#160;
-						 <input type="radio" name="pref-showinactivity" value="always" <?php if ($_COOKIE['sulinfo-pref-showinactivity']=='always') echo 'checked="checked"'; ?>/>Always&#160;&#160;
-						 <input type="radio" name="pref-showinactivity" value="never" <?php if ($_COOKIE['sulinfo-pref-showinactivity']=='never') echo 'checked="checked"'; ?>/>Never</td></tr>
+						 <input type="radio" name="pref-showinactivity" value="always" <?php if (isset($_COOKIE['sulinfo-pref-showinactivity']) && $_COOKIE['sulinfo-pref-showinactivity']=='always') echo 'checked="checked"'; ?>/>Always&#160;&#160;
+						 <input type="radio" name="pref-showinactivity" value="never" <?php if (isset($_COOKIE['sulinfo-pref-showinactivity']) && $_COOKIE['sulinfo-pref-showinactivity']=='never') echo 'checked="checked"'; ?>/>Never</td></tr>
 <tr><td class='mw-label'><label>Display blocks :</label></td>
 	<td class='mw-input'><input type="radio" name="pref-showblocks" value="ask" <?php if (empty($_COOKIE['sulinfo-pref-showblocks']) || $_COOKIE['sulinfo-pref-showblocks']=='ask') echo 'checked="checked"'; ?>/>Still ask&#160;&#160;
-						 <input type="radio" name="pref-showblocks" value="always" <?php if ($_COOKIE['sulinfo-pref-showblocks']=='always') echo 'checked="checked"'; ?>/>Always&#160;&#160;
-						 <input type="radio" name="pref-showblocks" value="never" <?php if ($_COOKIE['sulinfo-pref-showblocks']=='never') echo 'checked="checked"'; ?>/>Never</td></tr>
+						 <input type="radio" name="pref-showblocks" value="always" <?php if (isset($_COOKIE['sulinfo-pref-showblocks']) && $_COOKIE['sulinfo-pref-showblocks']=='always') echo 'checked="checked"'; ?>/>Always&#160;&#160;
+						 <input type="radio" name="pref-showblocks" value="never" <?php if (isset($_COOKIE['sulinfo-pref-showblocks']) && $_COOKIE['sulinfo-pref-showblocks']=='never') echo 'checked="checked"'; ?>/>Never</td></tr>
 <tr><td class='mw-label'><label>Show locked/closed wikis :</label></td>
 	<td class='mw-input'><input type="radio" name="pref-showlocked" value="ask" <?php if (empty($_COOKIE['sulinfo-pref-showlocked']) || $_COOKIE['sulinfo-pref-showlocked']=='ask') echo 'checked="checked"'; ?>/>Still ask&#160;&#160;
-						 <input type="radio" name="pref-showlocked" value="always" <?php if ($_COOKIE['sulinfo-pref-showlocked']=='always') echo 'checked="checked"'; ?>/>Always&#160;&#160;
-						 <input type="radio" name="pref-showlocked" value="never" <?php if ($_COOKIE['sulinfo-pref-showlocked']=='never') echo 'checked="checked"'; ?>/>Never</td></tr>
+						 <input type="radio" name="pref-showlocked" value="always" <?php if (isset($_COOKIE['sulinfo-pref-showlocked']) && $_COOKIE['sulinfo-pref-showlocked']=='always') echo 'checked="checked"'; ?>/>Always&#160;&#160;
+						 <input type="radio" name="pref-showlocked" value="never" <?php if (isset($_COOKIE['sulinfo-pref-showlocked']) && $_COOKIE['sulinfo-pref-showlocked']=='never') echo 'checked="checked"'; ?>/>Never</td></tr>
 <tr><td>&#160;</td><td class='mw-submit'><input type="submit" value="Change preferences" /></td></tr>
 </table>
 </form></fieldset>
