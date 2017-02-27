@@ -86,7 +86,7 @@ else
 	// taking GET vars
 	$username = $mysql->real_escape_string($_GET['username']);
 	
-	// getting a lits of wikis from the database (only non-locked)
+	// getting a list of wikis from the database (only non-locked)
 	$res = $mysql->query ("SELECT `dbname`,`slice`,`url` FROM `wiki` WHERE `is_closed`=0 ORDER BY `slice`"); 
 	$arr_databases = array();
 	while ($line = $res->fetch_assoc()) { $arr_databases[$line['slice']][$line['dbname']] = $line['url']; }
@@ -103,35 +103,36 @@ else
 		// re-opening database connection everytime host is changing
 		$mysql->close();
 		$toolserver_mycnf = parse_ini_file("/data/project/quentinv57-tools/replica.my.cnf");
-		$mysql = new MySQLi ($sql_server, $toolserver_mycnf['user'], $toolserver_mycnf['password']); // or echo "<p>SQL error : Can't connect to $sql_server</p>";
+		$mysql = new MySQLi ('enwiki.labsdb', $toolserver_mycnf['user'], $toolserver_mycnf['password']); // or echo "<p>SQL error : Can't connect to $sql_server</p>";
 		$mysql->set_charset("utf8"); // sometimes better
 		unset($toolserver_mycnf);
 	
 		// second loop, for each database (= each wiki)
 		foreach ($content as $db => $domain)
-		{ 
-			$project = substr($db,0,-2);
-			$project_url = '//' .$domain; // much better :)
+		{
+			$project = $db;			// Not substr($db,0,-2); fixed by -jem-, May 2015
+			$project_url = '//' .$domain; 	// much better :)
 			
-			$mysql->select_db($db);
+			$mysql->select_db("{$db}_p");		// Not just $db; fixed by -jem-, May 2015 
 			$res = $mysql->query ("SELECT `log_action`,`log_timestamp`,`log_title`,`log_comment`,`log_params` FROM `logging_userindex` LEFT JOIN `user` ON `user`.`user_id`=`logging_userindex`.`log_user` WHERE `user_name`='" .$username. "'");
 			
 			// then a while loop on the MySQL result
-			while ($line = $res->fetch_assoc())
-			{
-				// if this action should be displayed
-				if (array_key_exists($line['log_action'], $displayed_actions))
-				{
-					$actions[$project][$line['log_action']] ++;
-					$actions[$project]['total'] ++;
-					$total[$line['log_action']] ++;
-					$total['total'] ++;
+			if ($res) {	// Mandatory or it would stop; fixed by -jem-, May 2015
+        			while ($line = $res->fetch_assoc())
+	        		{
+		        		// if this action should be displayed
+			        	if (array_key_exists($line['log_action'], $displayed_actions))
+			        	{
+        					$actions[$project][$line['log_action']] ++;
+	        				$actions[$project]['total'] ++;
+		        			$total[$line['log_action']] ++;
+			        		$total['total'] ++;
 					
-					if ($actions[$project]['total']==1) $nbwikistouched++;
-				}
-			}
-			
-			$res->free();
+				        	if ($actions[$project]['total']==1) $nbwikistouched++;
+        				}
+	        		}
+	        		$res->free();
+                        }
 		}
 	}
 	
@@ -149,12 +150,12 @@ else
 <p><strong>Number of wikis :</strong> <?php echo nformat($nbwikistouched); ?></p>
 <?php
 	foreach ($displayed_actions as $key => $title)
-			echo '<p>Total ' .strtolower($title). ' : ' .number_format($total[$key],0,'.',' '). '</p>'."\n";
+                echo '<p>Total ' .strtolower($title). ' : ' .number_format($total[$key],0,'.',' '). '</p>'."\n";
 ?></fieldset>
 
 
 <table class="wikitable sortable">
-  <tr><th>Wiki</th><th>Total actions</th>
+<tr><th>Wiki</th><th>Total actions</th>
 <?php
 	// Displays the heading of the stats table
 	foreach ($displayed_actions as $key => $title)
